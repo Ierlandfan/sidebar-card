@@ -402,7 +402,16 @@ class SidebarCard extends LitElement {
         null,
         (res) => {
           const regex = /<(?:li|div)(?:\s+(?:class|id)\s*=\s*"([^"]*)")*\s*>([^<]*)<\/(?:li|div)>/g
-          this.templateLines = res.match(regex).map( (val) => val);
+                const matches = res.match(regex);
+
+            if (matches) {
+                this.templateLines = matches.map((val) => val);
+            } else {
+                this.templateLines = [];
+                console.warn("No matches found for regex. Here's the template result:", res);
+                console.log("regex used:", regex)
+                console.log("config used : ", this.config)
+            }
           this.requestUpdate();
         },
         {
@@ -419,8 +428,18 @@ class SidebarCard extends LitElement {
         null,
         (res) => {
           const regex = /<(?:li|div)(?:\s+(?:class|id)\s*=\s*"([^"]*)")*\s*>([^<]*)<\/(?:li|div)>/g
-     	  this.templateLines = res.match(regex).map( (val) => val);
-          this.requestUpdate();
+     	        const matches = res.match(regex);
+
+            if (matches) {
+                this.templateLines = matches.map((val) => val);
+            } else {
+                this.templateLines = [];
+                console.warn("No matches found for regex. Here's the template result:", res);
+                console.log("regex used:", regex)
+                console.log("config used : ", this.config)
+            }
+        
+		this.requestUpdate();
         },
         {
           template: this.config.titleTemplate,
