@@ -76,6 +76,7 @@ class SidebarCard extends LitElement {
   render() {
     const sidebarMenu = this.config.sidebarMenu;
     const title = 'title' in this.config ? this.config.title : false;
+    const titleTemplate = 'titleTemplate' in this.config ? this.config.titleTemplate : false;
     const addStyle = 'style' in this.config;
 
     this.clock = this.config.clock ? this.config.clock : false;
@@ -115,16 +116,15 @@ class SidebarCard extends LitElement {
               </div>
             `
           : html``}
-        ${this.config.template
+        ${title
           ? html`
-              <hl class="template">
-                ${this.templateLines1.map((line) => {
-                  return html`
-                    ${createElementFromHTML(line)}
-                  `;
-                })}
-              </hl>
-	: html``}
+              <h1 class="title">${title}</h1>
+            `
+          : titleTemplate
+          ? html`
+              <h1 class="title">${this.titleTemplateRendered}</h1>
+            `
+          : html``}
         ${this.date
           ? html`
               <h2 class="date"></h2>
@@ -148,10 +148,10 @@ class SidebarCard extends LitElement {
               </ul>
             `
           : html``}
-        ${this.config.template1
+        ${this.config.template
           ? html`
               <ul class="template">
-                ${this.templateLines1.map((line) => {
+                ${this.templateLines.map((line) => {
                   return html`
                     ${createElementFromHTML(line)}
                   `;
@@ -414,6 +414,21 @@ class SidebarCard extends LitElement {
     }
   }
 
+  if (this.config.titleTemplate) {
+      subscribeRenderTemplate(
+        null,
+        (res) => {
+          this.titleTemplateRendered = res;
+          this.requestUpdate();
+        },
+        {
+          template: this.config.titleTemplate,
+          variables: { config: this.config },
+          entity_ids: this.config.entity_ids,
+        }
+      );
+    }
+  }
   getCardSize() {
     return 1;
   }
