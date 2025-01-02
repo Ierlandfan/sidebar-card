@@ -36,6 +36,8 @@ class SidebarCard extends LitElement {
   shadowRoot: any;
   renderCard: any;
   templateLines: any = [];
+  templateLines1: any = [];
+
   clock = false;
   updateMenu = true;
   digitalClock = false;
@@ -113,11 +115,16 @@ class SidebarCard extends LitElement {
               </div>
             `
           : html``}
-        ${title
+        ${this.config.template
           ? html`
-              <h1 class="title">${title}</h1>
-            `
-          : html``}
+              <hl class="template">
+                ${this.templateLines1.map((line) => {
+                  return html`
+                    ${createElementFromHTML(line)}
+                  `;
+                })}
+              </hl>
+	: html``}
         ${this.date
           ? html`
               <h2 class="date"></h2>
@@ -141,10 +148,10 @@ class SidebarCard extends LitElement {
               </ul>
             `
           : html``}
-        ${this.config.template
+        ${this.config.template1
           ? html`
               <ul class="template">
-                ${this.templateLines.map((line) => {
+                ${this.templateLines1.map((line) => {
                   return html`
                     ${createElementFromHTML(line)}
                   `;
